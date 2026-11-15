@@ -12,11 +12,18 @@ pub enum ScopeStatus {
     /// A manual eject is in progress.
     Attempting { operation_id: String },
     /// Busy result; eligible for retry opt-in.
-    Busy { diagnostics: Option<DiagnosticReport> },
+    Busy {
+        diagnostics: Option<DiagnosticReport>,
+    },
     /// Automatic retry is armed and waiting/running.
-    RetryArmed { retry: RetryState, diagnostics: Option<DiagnosticReport> },
+    RetryArmed {
+        retry: RetryState,
+        diagnostics: Option<DiagnosticReport>,
+    },
     /// Retry deadline reached without success.
-    RetryExpired { diagnostics: Option<DiagnosticReport> },
+    RetryExpired {
+        diagnostics: Option<DiagnosticReport>,
+    },
     /// Backend confirmed safe to unplug.
     SafeToUnplug,
     /// Device disappeared.
@@ -53,7 +60,10 @@ pub enum UserIntent {
 }
 
 /// Derive a new status from a native outcome. Does not arm retry automatically.
-pub fn status_from_outcome(outcome: EjectOutcome, diagnostics: Option<DiagnosticReport>) -> ScopeStatus {
+pub fn status_from_outcome(
+    outcome: EjectOutcome,
+    diagnostics: Option<DiagnosticReport>,
+) -> ScopeStatus {
     match outcome {
         EjectOutcome::ConfirmedEject => ScopeStatus::SafeToUnplug,
         EjectOutcome::Busy { .. } => ScopeStatus::Busy { diagnostics },

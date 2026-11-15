@@ -9,7 +9,9 @@ use eject_core::device::{PhysicalDeviceKey, RemovalScope, TopologySnapshot};
 use eject_core::error::EjectOutcome;
 use eject_core::evidence::DiagnosticReport;
 use eject_core::retry::{RetryPolicy, RetryState};
-use eject_core::state::{can_arm_retry, can_request_manual_eject, status_from_outcome, ScopeStatus};
+use eject_core::state::{
+    can_arm_retry, can_request_manual_eject, status_from_outcome, ScopeStatus,
+};
 use eject_platform::{default_backend, EjectBackend, EjectRequest};
 use parking_lot::Mutex;
 use serde::{Deserialize, Serialize};
@@ -144,7 +146,11 @@ async fn request_eject(
         if st.in_flight.contains(&key) {
             return Err("Operation already in flight for this scope".into());
         }
-        let current = st.statuses.get(&key).cloned().unwrap_or(ScopeStatus::Eligible);
+        let current = st
+            .statuses
+            .get(&key)
+            .cloned()
+            .unwrap_or(ScopeStatus::Eligible);
         if !can_request_manual_eject(&current) {
             return Err("Device is not in a state that allows eject".into());
         }
@@ -186,7 +192,11 @@ async fn arm_retry(
     };
     let key = AppState::scope_key(&scope);
     let mut st = state.lock();
-    let current = st.statuses.get(&key).cloned().unwrap_or(ScopeStatus::Eligible);
+    let current = st
+        .statuses
+        .get(&key)
+        .cloned()
+        .unwrap_or(ScopeStatus::Eligible);
     if !can_arm_retry(&current) {
         return Err("Retry can only be armed after a busy result".into());
     }

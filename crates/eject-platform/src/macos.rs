@@ -5,7 +5,6 @@
 use crate::{BackendError, BackendResult, EjectBackend, EjectRequest, EjectResponse};
 use async_trait::async_trait;
 use eject_core::device::{RemovalScope, TopologySnapshot};
-use eject_core::error::EjectOutcome;
 use eject_core::evidence::DiagnosticReport;
 
 pub struct MacosBackend;

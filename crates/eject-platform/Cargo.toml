@@ -11,23 +11,10 @@ serde.workspace = true
 async-trait = "0.1"
 
 [target.'cfg(windows)'.dependencies]
-windows = { version = "0.58", features = [
-    "Win32_Devices_DeviceAndDriverInstallation",
-    "Win32_Devices_Properties",
-    "Win32_Foundation",
-    "Win32_System_IO",
-    "Win32_System_Ioctl",
-    "Win32_System_Registry",
-    "Win32_Security",
-    "Win32_System_Threading",
-    "Win32_Storage_FileSystem",
-] }
+# windows = { version = "0.58", features = [...] }  # add when implementing Windows adapter
 
 [target.'cfg(target_os = "macos")'.dependencies]
-core-foundation = "0.10"
-core-foundation-sys = "0.8"
-# Note: Disk Arbitration bindings may need manual FFI depending on crate availability.
+# core-foundation = "0.10"  # add when implementing macOS adapter
 
 [target.'cfg(target_os = "linux")'.dependencies]
-zbus = { version = "4.4", default-features = false, features = ["tokio"] }
-tokio = { version = "1", features = ["rt", "net"] }
+# zbus = { version = "4.4", default-features = false, features = ["tokio"] }  # add when implementing Linux adapter

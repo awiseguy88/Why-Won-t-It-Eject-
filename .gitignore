@@ -15,3 +15,7 @@ dist-ssr/
 *.sw?
 src-tauri/target/
 src-tauri/gen/
+# build artifacts
+ui/dist/
+ui/tsconfig.tsbuildinfo
+ui/node_modules/
