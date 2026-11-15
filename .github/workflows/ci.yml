@@ -1,0 +1,46 @@
+.github/workflows/ci.yml:
+  name: CI
+  on: [push, pull_request]
+  jobs:
+    core-tests:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: dtolnay/rust-toolchain@stable
+        - run: cargo fmt --check
+        - run: cargo clippy --all-targets -- -D warnings
+        - run: cargo test -p eject-core
+
+    lint-ui:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: pnpm/action-setup@v4
+        - uses: actions/setup-node@v4
+        - run: pnpm install
+        - run: pnpm --dir ui install
+        - run: pnpm --dir ui lint
+        - run: pnpm --dir ui build
+
+    packaging-smoke:
+      needs: [core-tests, lint-ui]
+      runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          os: [ubuntu-latest, macos-latest, windows-latest]
+      steps:
+        - uses: actions/checkout@v4
+        # Placeholder: Tauri build + sign/notarize per platform when signing identities configured
+
+.github/workflows/release.yml:
+  name: Release
+  on:
+    push:
+      tags: ['v*']
+  jobs:
+    release:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        # Build, sign, notarize, staple; compute SHA256SUMS; provenance; draft release
+        # Publish job compares expected file manifest to actual uploaded filenames/hashes

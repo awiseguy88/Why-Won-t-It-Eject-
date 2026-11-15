@@ -1,0 +1,23 @@
+[package]
+name = "why-wont-it-eject-app"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Why Won't It Eject? desktop application"
+
+[build-dependencies]
+tauri-build = { version = "2.0", features = [] }
+
+[dependencies]
+tauri = { version = "2.1", features = ["tray-icon", "image-png"] }
+tauri-plugin-notification = "2.0"
+serde.workspace = true
+serde_json.workspace = true
+eject-core = { path = "../crates/eject-core" }
+eject-platform = { path = "../crates/eject-platform" }
+parking_lot.workspace = true
+tokio = { version = "1", features = ["time", "macros"] }
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]

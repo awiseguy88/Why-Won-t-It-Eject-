@@ -1,0 +1,8 @@
+{
+  "outcome": { "Busy": { "native_hint": "Veto: ProcessName=vlc.exe PID=4242" } },
+  "expected_ui": {
+    "status": "Busy",
+    "copy_should_include": ["still in use"],
+    "retry_eligible": true
+  }
+}

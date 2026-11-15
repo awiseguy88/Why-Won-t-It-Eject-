@@ -1,0 +1,17 @@
+target/
+node_modules/
+dist/
+dist-ssr/
+*.local
+.DS_Store
+*.log
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+src-tauri/target/
+src-tauri/gen/

@@ -1,0 +1,43 @@
+name: Bug report
+description: Report a reproducible bug in Why Won't It Eject?
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened and what you expected.
+    validations:
+      required: true
+  - type: input
+    id: os-version
+    attributes:
+      label: OS and version
+      description: e.g. Windows 11 24H2 x64, macOS 15.2 Apple Silicon, Ubuntu 24.04 x86_64
+    validations:
+      required: true
+  - type: input
+    id: app-version
+    attributes:
+      label: App version / commit
+    validations:
+      required: true
+  - type: input
+    id: drive
+    attributes:
+      label: Drive model/connection/filesystem
+      description: e.g. Samsung T7, USB, exFAT; use fictitious identifiers
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: native-result
+    attributes:
+      label: Native result / evidence (redacted)
+      description: OS result, veto name/process if shown; redact real paths/names

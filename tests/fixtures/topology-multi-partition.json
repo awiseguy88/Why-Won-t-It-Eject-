@@ -1,0 +1,17 @@
+{
+  "devices": [
+    {
+      "key": { "native_id": "usb:disk:FAKE-SSD-002", "attach_generation": 1 },
+      "model": "Portable SSD T7",
+      "vendor": "Samsung",
+      "label": "Samsung T7",
+      "size_bytes": 1000204886016,
+      "eligible": true,
+      "ineligible_reason": null,
+      "volumes": [
+        { "id": "vol:SSD-002-A", "label": "Work", "mount_point": "D:\\", "fs_type": "ntfs", "size_bytes": 500000000000 },
+        { "id": "vol:SSD-002-B", "label": "Media", "mount_point": "E:\\", "fs_type": "exfat", "size_bytes": 500204886016 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+name: Hardware compatibility report
+description: Report results from testing eject on specific hardware
+title: "[Hardware] "
+labels: ["hardware-compat"]
+body:
+  - type: input
+    id: os-cpu
+    attributes:
+      label: OS build and CPU
+      description: e.g. Windows 11 24H2 x64
+    validations:
+      required: true
+  - type: input
+    id: drive-bridge
+    attributes:
+      label: Drive model / bridge or enclosure / hub
+    validations:
+      required: true
+  - type: input
+    id: filesystem
+    attributes:
+      label: Filesystem
+      description: e.g. exFAT, NTFS, APFS, ext4
+    validations:
+      required: true
+  - type: input
+    id: account
+    attributes:
+      label: Account type
+      description: e.g. standard / restricted-visibility
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Observed outcome / native result
+      description: What happened during eject; redacted
+    validations:
+      required: true

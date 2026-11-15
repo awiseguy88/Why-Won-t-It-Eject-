@@ -1,0 +1,22 @@
+{
+  "devices": [
+    {
+      "key": { "native_id": "usb:disk:FAKE-SERIAL-001", "attach_generation": 1 },
+      "model": "USB Flash Drive",
+      "vendor": "Generic",
+      "label": "USB Flash Drive",
+      "size_bytes": 16008609792,
+      "eligible": true,
+      "ineligible_reason": null,
+      "volumes": [
+        {
+          "id": "vol:FAKE-001",
+          "label": "BACKUP",
+          "mount_point": "/media/user/BACKUP",
+          "fs_type": "exfat",
+          "size_bytes": 16008609792
+        }
+      ]
+    }
+  ]
+}

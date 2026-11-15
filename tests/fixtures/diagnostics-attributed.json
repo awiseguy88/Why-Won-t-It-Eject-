@@ -1,0 +1,15 @@
+{
+  "items": [
+    {
+      "source": "OsAttributedVeto",
+      "process_name": "VLC",
+      "pid": 4242,
+      "process_start_id": "boot:123:start:999",
+      "file_path": "Videos/clip.mp4",
+      "observed_at_unix_ms": 1730000000000,
+      "detail": "Windows reports that VLC prevented eject."
+    }
+  ],
+  "incomplete": false,
+  "note": null
+}

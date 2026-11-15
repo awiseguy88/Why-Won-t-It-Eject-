@@ -1,0 +1,89 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+          - os: windows-latest
+            target: aarch64-pc-windows-msvc
+          - os: macos-latest
+            target: universal-apple-darwin
+          - os: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+          - os: ubuntu-22.04-arm
+            target: aarch64-unknown-linux-gnu
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4 # TODO: pin to full SHA before enabling in production
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable # TODO: pin to full SHA
+
+      - name: Setup Node/pnpm
+        uses: pnpm/action-setup@v4 # TODO: pin to full SHA
+        with:
+          version: 9
+      - uses: actions/setup-node@v4 # TODO: pin to full SHA
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Install JS deps
+        run: |
+          pnpm install --frozen-lockfile || pnpm install
+          pnpm --dir ui install --frozen-lockfile || pnpm --dir ui install
+
+      - name: Build Tauri bundle
+        run: pnpm tauri build
+        # TODO: per-target signing/notarization/stapling, WebView2 bootstrap modes,
+        # Linux baseline verification, expected artifact manifest checks.
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4 # TODO: pin to full SHA
+        with:
+          name: bundle-${{ matrix.os }}-${{ matrix.target }}
+          path: src-tauri/target/release/bundle/**
+
+  publish:
+    name: Publish draft release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 # TODO: pin to full SHA
+      - uses: actions/download-artifact@v4 # TODO: pin to full SHA
+        with:
+          path: dist
+
+      - name: Compute checksums
+        run: |
+          cd dist
+          find . -type f \( -name "*.exe" -o -name "*.dmg" -o -name "*.deb" -o -name "*.rpm" -o -name "*.AppImage" \) -print0 | sort -z | xargs -0 sha256sum > ../SHA256SUMS.txt
+
+      # TODO: attest build provenance for every shipped binary/package (actions/attest-build-provenance)
+      # TODO: compare expected file manifest to actual uploaded filenames/hashes before publishing
+      # TODO: create draft GitHub release, attach artifacts + SHA256SUMS.txt, then publish after verification
+      - name: Draft release (placeholder)
+        run: echo "Draft release assembly placeholder - implement manifest check, attestation, gh release create --draft"
