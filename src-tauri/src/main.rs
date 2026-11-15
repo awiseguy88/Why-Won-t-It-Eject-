@@ -7,17 +7,16 @@
 
 use eject_core::device::{PhysicalDeviceKey, RemovalScope, TopologySnapshot};
 use eject_core::error::EjectOutcome;
-use eject_core::evidence::DiagnosticReport;
 use eject_core::retry::{RetryPolicy, RetryState};
 use eject_core::state::{
     can_arm_retry, can_request_manual_eject, status_from_outcome, ScopeStatus,
 };
-use eject_platform::{default_backend, EjectBackend, EjectRequest};
+use eject_platform::{default_backend, EjectBackend};
 use parking_lot::Mutex;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::Arc;
-use tauri::{Emitter, Manager, State};
+use tauri::State;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UiDevice {
