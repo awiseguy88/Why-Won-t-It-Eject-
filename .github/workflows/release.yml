@@ -22,9 +22,11 @@ jobs:
           - os: windows-latest
             target: x86_64-pc-windows-msvc
             args: ""
+            bundles: "msi"
           - os: windows-latest
             target: aarch64-pc-windows-msvc
             args: ""
+            bundles: "msi"
           - os: macos-latest
             target: universal-apple-darwin
             args: "--target universal-apple-darwin"
@@ -40,6 +42,10 @@ jobs:
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
+
+      - name: Add Rust target (universal macOS)
+        if: matrix.target == 'universal-apple-darwin'
+        run: rustup target add x86_64-apple-darwin aarch64-apple-darwin
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -65,7 +71,7 @@ jobs:
         run: pnpm install --frozen-lockfile || pnpm install
 
       - name: Build Tauri bundle
-        run: pnpm tauri build ${{ matrix.args }}
+        run: pnpm tauri build ${{ matrix.args }} ${{ matrix.bundles && format('--bundles {0}', matrix.bundles) || '' }}
         env:
           # Set signing secrets in repository/environment when configured; build is unsigned otherwise.
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
@@ -81,7 +87,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bundle-${{ matrix.os }}-${{ matrix.target }}
-          path: src-tauri/target/release/bundle/**
+          path: target/release/bundle/**
           if-no-files-found: error
 
   publish:
